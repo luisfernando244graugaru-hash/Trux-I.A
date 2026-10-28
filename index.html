@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRUX AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Tela de Login -->
+    <div id="login-screen" class="screen active">
+        <div class="login-box">
+            <div class="logo-icon">T</div>
+            <h1>Bem-vindo de volta</h1>
+            <p>Entre na sua conta para continuar na TRUX AI.</p>
+            
+            <div class="input-group">
+                <label>E-mail</label>
+                <input type="email" id="login-email" placeholder="voce@exemplo.com">
+            </div>
+            <div class="input-group">
+                <label>Senha</label>
+                <div class="password-wrapper">
+                    <input type="password" id="login-password" placeholder="Sua senha">
+                    <i class="fa-regular fa-eye"></i>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="login()">Continuar</button>
+            <p class="footer-text">Não tem uma conta? <a href="#">Criar conta</a></p>
+        </div>
+    </div>
+
+    <!-- Tela Principal do App -->
+    <div id="app-screen" class="screen hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <div class="logo-mini">T</div>
+                    <span>TRUX AI</span>
+                </div>
+                <i class="fa-solid fa-bars" onclick="toggleSidebar()"></i>
+            </div>
+            
+            <button class="btn-new-chat" onclick="newChat()">
+                <i class="fa-solid fa-pen-to-square"></i> Novo chat
+            </button>
+            
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Buscar conversas">
+            </div>
+
+            <div class="history-list" id="history-list">
+                <span class="history-title">Hoje</span>
+                <div class="history-item active">Computação Quântica Simples</div>
+            </div>
+
+            <div class="user-profile">
+                <div class="avatar">G</div>
+                <div class="user-info">
+                    <strong>Gabriel Silva</strong>
+                    <span>Conta TRUX</span>
+                </div>
+                <i class="fa-solid fa-ellipsis-vertical" onclick="openSettings()"></i>
+            </div>
+        </aside>
+
+        <!-- Área Principal de Chat -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="model-selector">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>TRUX Rápido</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+            </header>
+
+            <!-- Boas-vindas (Início) -->
+            <div id="welcome-view" class="welcome-view">
+                <div class="logo-large">T</div>
+                <h2>Boa noite, Gabriel</h2>
+                <p>Como posso ajudar você hoje?</p>
+
+                <div class="suggestion-grid">
+                    <div class="suggestion-card" onclick="sendSuggestion('Explique computação quântica de forma simples')">
+                        <i class="fa-regular fa-lightbulb"></i>
+                        <h3>Explicar um conceito</h3>
+                        <p>Explique computação quântica de forma simples</p>
+                    </div>
+                    <div class="suggestion-card" onclick="sendSuggestion('Escreva uma função JavaScript que valide CPF')">
+                        <i class="fa-solid fa-code"></i>
+                        <h3>Escrever código</h3>
+                        <p>Escreva uma função JavaScript que valide CPF</p>
+                    </div>
+                    <div class="suggestion-card" onclick="sendSuggestion('Uma cidade cyberpunk ao entardecer')">
+                        <i class="fa-regular fa-image"></i>
+                        <h3>Criar uma imagem</h3>
+                        <p>Uma cidade cyberpunk ao entardecer</p>
+                    </div>
+                    <div class="suggestion-card" onclick="sendSuggestion('Quais as principais notícias de tecnologia hoje?')">
+                        <i class="fa-solid fa-globe"></i>
+                        <h3>Pesquisar na web</h3>
+                        <p>Quais as principais notícias de tecnologia hoje?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área de Mensagens -->
+            <div id="chat-view" class="chat-view hidden"></div>
+
+            <!-- Input de Mensagem -->
+            <div class="input-area">
+                <div class="input-container">
+                    <i class="fa-solid fa-plus"></i>
+                    <input type="text" id="user-input" placeholder="Pergunte alguma coisa à TRUX AI" onkeypress="handleEnter(event)">
+                    <div class="input-actions">
+                        <i class="fa-solid fa-microphone"></i>
+                        <button class="btn-send" onclick="sendMessage()"><i class="fa-solid fa-arrow-up"></i></button>
+                    </div>
+                </div>
+                <p class="disclaimer">A TRUX AI pode cometer erros. Confira informações importantes.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Configurações -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Configurações</h2>
+                <i class="fa-solid fa-xmark" onclick="closeSettings()"></i>
+            </div>
+            <div class="modal-body">
+                <h3>PERFIL</h3>
+                <label>Nome</label>
+                <input type="text" value="Gabriel Silva">
+                <label>E-mail</label>
+                <input type="email" value="gabriel@exemplo.com">
+                <button class="btn-primary small">Salvar nome</button>
+
+                <h3>APARÊNCIA</h3>
+                <div class="theme-toggle">
+                    <span>Tema</span>
+                    <div class="theme-options">
+                        <button class="active" onclick="setTheme('dark')">Escuro</button>
+                        <button onclick="setTheme('light')">Claro</button>
+                        <button onclick="setTheme('system')">Sistema</button>
+                    </div>
+                </div>
+
+                <h3>SEGURANÇA</h3>
+                <label>Senha atual</label>
+                <input type="password">
+                <label>Nova senha</label>
+                <input type="password" placeholder="Mínimo de 8 caracteres">
+                <button class="btn-secondary small">Alterar senha</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⚠️ PAINEL DE CONTROLE ADMIN (Oculto) ⚠️ -->
+    <div id="admin-panel" class="modal hidden">
+        <div class="modal-content admin-content">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-shield-halved"></i> Painel de Controle TRUX</h2>
+                <i class="fa-solid fa-xmark" onclick="closeAdmin()"></i>
+            </div>
+            <div class="modal-body">
+                <p class="admin-desc">Aqui você controla o "cérebro" da I.A. Tudo que for digitado abaixo será usado como base de conhecimento.</p>
+                
+                <label>Personalidade da I.A. (System Prompt)</label>
+                <textarea id="admin-personality" rows="3">Você é a TRUX AI, uma inteligência artificial prestativa, direta e altamente técnica. Responda sempre em português do Brasil.</textarea>
+
+                <label>Regras de Resposta (Ex: Se o usuário pedir código, responda em blocos formatados)</label>
+                <textarea id="admin-rules" rows="3">Sempre formate códigos com ```. Se o usuário pedir imagem, diga que gerou a imagem e mostre um placeholder.</textarea>
+
+                <label>Respostas Customizadas (JSON)</label>
+                <p class="help-text">Mapeie perguntas exatas para respostas exatas.</p>
+                <textarea id="admin-responses" rows="5">{
+  "oi": "Olá! Como posso ajudar você hoje?",
+  "quem é você": "Eu sou a TRUX AI, criada para ser a melhor assistente.",
+  "computação quântica": "A computação quântica usa qubits. Superposição: o qubit vale 0 e 1 simultaneamente. Emaranhamento: qubits ligados compartilham estado."
+}</textarea>
+
+                <button class="btn-primary" onclick="saveAdminSettings()">Salvar Cérebro da I.A.</button>
+                <p id="admin-status" class="success-msg hidden">Configurações salvas com sucesso!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
